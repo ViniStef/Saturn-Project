@@ -1,0 +1,9 @@
+{
+    "liveServer.settings.port": 5501,
+    "liveServer.settings.root": "C:/Users/Vinicius/Desktop/Codigo/Saturn/saturnapp",
+    "liveServer.settings.AdvanceCustomBrowserCmdLine": " --disable-web-security",
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
+    "python.formatting.provider": "none"
+}

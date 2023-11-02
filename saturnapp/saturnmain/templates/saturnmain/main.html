@@ -1,0 +1,150 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saturn</title>
+    <link rel="shortcut icon" href="{% static 'saturnmain/img/Saturn2.png' %}" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'saturnmain/css/reset.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'saturnmain/css/styles.css' %}">
+
+</head>
+
+<body>
+
+    <header class="header">
+        <nav class="header__nav">
+            <ul class="nav__list">
+                <li class="nav__item item--flex item--left">
+                    <img src="{% static 'saturnmain/img/Saturn-transparent.png' %}" alt="Saturn Logo"
+                        class="item__logo">
+                    <h1 class="item__text text--gradient">SATURN</h1>
+                </li>
+                <li class="nav__item">
+                    <a href="#" class="item__link link--github">
+                        <img src="{% static 'saturnmain/img/github.svg' %}" class="item__svg item--github" alt="">
+                    </a>
+                </li>
+                <li class="nav__item">
+                    <a href="#" class="item__link link--linkedin">
+                        <img src="{% static 'saturnmain/img/linkedin.svg' %}" class="item__svg item--linkedin" alt="">
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        <section class="image__section">
+            <div class="image__container">
+
+                <div class="image__holder">
+                    <img src="{% static 'saturnmain/img/Earth Spirit.png' %}" style="scale: 1;" alt="Your Image" id="holder__img">
+                </div>
+
+                <div class="image__rotate">
+                    {{image}}
+                    <h2 class="rotate__text image__text">Rotate Image</h2>
+                    <div class="rotate__flip">
+                        <h3 class="flip__text image__text">Flip Image</h3>
+                        <button type="button" class="flip__button flip__button--vertical">
+
+                        </button>
+                        <button type="button" class="flip__button flip__button--horizontal">
+
+                        </button>
+                    </div>
+
+                    <div class="rotate__options">
+                        <div class="options__shrink options__wrapper">
+                            <p class="shrink__text image__text">Shrink to Fit?</p>
+                            <label for="shrink__checkbox" class="slider__toggle">
+                                <input type="checkbox" id="shrink__checkbox" class="toggle__input">
+                                <span class="checkbox__slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="options__reverse options__wrapper">
+                            <p class="reverse__text image__text">Reverse</p>
+                            <label for="reverse__checkbox" class="slider__toggle">
+                                <input type="checkbox" id="reverse__checkbox" class="toggle__input">
+                                <span class="checkbox__slider"></span>
+                            </label>
+                        </div>
+
+                        <div class="options__angle options__wrapper">
+                            <button class="angle__option angle__button--90">
+                                90°
+                            </button>
+                            <button class="angle__option angle__button--180">
+                                180°
+                            </button>
+                            <button class="angle__option angle__button--270">
+                                270°
+                            </button>
+                            <label for="custom__angle" class="angle__custom">
+                                <input class="angle__option custom__angle" type="text" placeholder="...">
+                            </label>
+                            <div id="circular-range"></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="image__file">
+
+                    <div class="file__upload">
+                        <form action="/image/" method="POST" enctype="multipart/form-data" class="upload__form">
+                            {% csrf_token %}
+                            <!-- <button type="button" class="upload__btn file__access"
+                                onclick="document.getElementById('upload__input').click()">
+                                Upload your Image
+                                
+                            </button> -->
+                            <label for="id_image" class="upload__label file__access">
+                                Upload your Image
+                                <img src="{% static 'saturnmain/img/upload_icon.svg' %}" alt="Upload"
+                                    class="upload__icon file__icon">
+                            </label>
+                            <input type="file" accept="image/jpeg, image/png, image/gif" name="image" required
+                                id="id_image" class="upload__input">
+                        </form>
+                    </div>
+
+                    <div class="file__download">
+                        <form action="" method="POST" enctype="multipart/form-data" class="download__form">
+                            <div class="download__container file__access">
+                                <a href="{% static 'saturnmain/img/download_icon.svg' %}" class="download__link"
+                                    download="download_icon.svg">
+
+                                    Click to Download
+                                    <img src="{% static 'saturnmain/img/download_icon.svg' %}"
+                                        class="download__icon file__icon" alt="Download Icon">
+                                </a>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const csrfToken = "{{ csrf_token }}";  // Get the CSRF token from the template
+    </script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.js"></script>
+    <script type="text/javascript" src="{% static 'saturnmain/js/angle-slider.js' %}"></script>
+    <script type="text/javascript" src="{% static 'saturnmain/js/image-flip.js' %}"></script>
+    <script type="text/javascript" src="{% static 'saturnmain/js/image-rotate.js' %}"></script>
+    <script type="text/javascript" src="{% static 'saturnmain/js/upload.js' %}"></script>
+</body>
+
+</html>
