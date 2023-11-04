@@ -3,6 +3,8 @@ horizontalBtn = document.querySelector(".flip__button--horizontal")
 image = document.querySelector("#holder__img")
 
 verticalBtn.addEventListener("click", (e) => { 
+    verticalBtn.classList.toggle("flipped");
+    document.querySelector(".flip__svg--vertical").classList.toggle("flipped");
     // image.style.transform = "scaleY(-1)";
     // image.style.transform = 'scaleY(-1)';
     if (image.style.transform.includes("scaleX(-1)")) {
@@ -26,6 +28,8 @@ verticalBtn.addEventListener("click", (e) => {
 })
 
 horizontalBtn.addEventListener("click", (e) => { 
+    horizontalBtn.classList.toggle("flipped");
+    document.querySelector(".flip__svg--horizontal").classList.toggle("flipped");
     if (image.style.transform.includes("scaleY(-1)")) {
         image.style.transform = "scale(-1, -1)";
     } else if (image.style.transform.includes("scaleX(-1)")) {

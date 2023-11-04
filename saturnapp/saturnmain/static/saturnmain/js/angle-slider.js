@@ -1,79 +1,191 @@
-
-function calculateRotatedHeight(originalWidth, originalHeight, rotationAngleDegrees) {
-    const angleInRadians = (rotationAngleDegrees * Math.PI) / 180;
-
-    // Calculate the rotated height using a different method
-    const rotatedHeight = Math.abs(
-        originalWidth * Math.abs(Math.sin(angleInRadians)) + originalHeight * Math.abs(Math.cos(angleInRadians))
-    );
-
-    return rotatedHeight;
-}
-
-function calculateScaleFactor(container_height, rotated_height, item_width, item_height) {
-    const item_aspect_ratio = item_width / item_height;
-
-    // Calculate the scale factor based on the container height and rotated height while preserving aspect ratio
-    const scale_factor = container_height / rotated_height;
-
-    // Adjust the item's width and height based on the scale factor while preserving aspect ratio
-    const scaled_width = item_width * scale_factor;
-    const scaled_height = item_height * scale_factor;
-
-    if (scaled_height > container_height) {
-        // If the scaled height exceeds the container height, recalculate using the container height
-        const max_scale_factor = container_height / item_height;
-        scaled_width = item_width * max_scale_factor;
-        scaled_height = item_height * max_scale_factor;
-        return { scale: max_scale_factor, width: scaled_width, height: scaled_height };
+export 
+class RoundSlider {
+    constructor(shrink = false, reverse = false, angle = 0) {
+        this.shrink = shrink;
+        this.reverse = reverse;
+        this.angle = angle;
     }
 
-    return { scale: scale_factor, width: scaled_width, height: scaled_height };
+    reset() {
+        const roundSlider = $("#circular__range").data('roundSlider');
+        roundSlider.setValue(0);
+        roundSlider.destroy();
+        this.manageRoundSlider();
+    }
+
+    getAngle() {
+        const roundSlider = $("#circular__range").data('roundSlider');
+        return roundSlider.getValue();
+    }
+
+    changeAngle(angle) {
+        const roundSlider = $("#circular__range").data('roundSlider');
+        roundSlider.setValue(angle);
+    }
+
+    manageRoundSlider() {
+        const img = document.querySelector("#holder__img");
+        const imgHolder = document.querySelector(".image__holder");
+    
+        const roundSliderOptions = {
+            radius: 100,
+            width: 8,
+            handleSize: "+24",
+            handleShape: "dot",
+            sliderType: "min-range",
+            value: 0,
+            startAngle: 90,
+            max: 360,
+            mouseScrollAction: true,
+            editableTooltip: false,
+            tooltipFormat: "angleIndicator"
+        }
+
+        function angleIndicator(args) {
+            return args.value + "°";
+        }
+    
+        function rotateImage(e) {
+            console.log("test")
+            function calculateRotatedHeight(originalWidth, originalHeight, rotationAngleDegrees) {
+                const angleInRadians = (rotationAngleDegrees * Math.PI) / 180;
+
+                // Calculando a altura pós rotação
+                const rotatedHeight = Math.abs(
+                    originalWidth * Math.abs(Math.sin(angleInRadians)) + originalHeight * Math.abs(Math.cos(angleInRadians))
+                );
+        
+                return rotatedHeight;
+            }
+
+            function calculateScaleFactor(containerHeight, rotatedHeight, itemWidth, itemHeight) {
+                const itemAspectRatio = itemWidth / itemHeight;
+        
+                // Calcula o scaleFactor baseado na altura do container e na altura pós rotação preservando o aspect ratio
+                const scaleFactor = containerHeight / rotatedHeight;
+
+                // Ajusta o width e height da imagem baseado no scaleFactor enquanto preserva o aspect ratio
+                const scaledWidth = itemWidth * scaleFactor;
+                const scaledHeight = itemHeight * scaleFactor;
+        
+                if (scaledHeight > containerHeight) {
+                    // Caso scaleHeight exceda a altura do container, recalcula usando a altura do container
+                    const maxScaleFactor = containerHeight / itemHeight;
+                    scaledWidth = itemWidth * maxScaleFactor;
+                    scaledHeight = itemHeight * maxScaleFactor;
+                    return { scale: maxScaleFactor, width: scaledWidth, height: scaledHeight };
+                }
+        
+                return { scale: scaleFactor, width: scaledWidth, height: scaledHeight };
+            }
+
+
+            const rotationAngleDegrees = e.value;
+            img.style.rotate = `${rotationAngleDegrees}deg`
+            
+    
+            const originalWidth = img.offsetWidth;
+            const originalHeight = img.offsetHeight;
+            const containerHeight = imgHolder.offsetHeight;
+            const rotatedHeight = calculateRotatedHeight(originalWidth, originalHeight, rotationAngleDegrees);
+    
+            if (rotationAngleDegrees === 0) {
+                // Caso a imagem não esteja rotacionada
+                img.style.scale = 1.0;
+            } else if (rotatedHeight - containerHeight >= 10) {
+                const scaleFactor = calculateScaleFactor(containerHeight, rotatedHeight, originalWidth, originalHeight)
+                img.style.scale = scaleFactor.scale;
+            }
+    
+        }
+    
+        $("#circular__range").roundSlider({
+            ...roundSliderOptions,
+            // Quando o usuário estiver arrastando o slider
+            drag: rotateImage,
+            // Quando o usuário solta o mouse do slider ou se inserir manualmente um valor no slider
+            change: rotateImage,
+            tooltipFormat: angleIndicator,
+        })
+    }
+
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    let img = document.querySelector("#holder__img");
+// function calculateRotatedHeight(originalWidth, originalHeight, rotationAngleDegrees) {
+//     const angleInRadians = (rotationAngleDegrees * Math.PI) / 180;
 
-    $("#circular-range").roundSlider({
-        radius: 100,
-        width: 8,
-        handleSize: "+24",
-        handleShape: "dot",
-        sliderType: "min-range",
-        value: 0,
-        startAngle: 90,
-        max: 360,
+//     // Calculate the rotated height using a different method
+//     const rotatedHeight = Math.abs(
+//         originalWidth * Math.abs(Math.sin(angleInRadians)) + originalHeight * Math.abs(Math.cos(angleInRadians))
+//     );
 
-        drag: (e) => {
-            img.style.rotate = `${e.value}deg`
-            const containerHeight = document.querySelector(".image__holder").offsetHeight
-            const originalWidth = img.offsetWidth;
-            const originalHeight = img.offsetHeight;
-            const rotationAngleDegrees = e.value;
-            const rotatedHeight = calculateRotatedHeight(originalWidth, originalHeight, rotationAngleDegrees);
+//     return rotatedHeight;
+// }
 
-            if (rotationAngleDegrees == 0) {
-                img.style.scale = 1.0;
-            }else if (rotatedHeight - containerHeight >= 10) {
-                const result = calculateScaleFactor(containerHeight, rotatedHeight, originalWidth, originalHeight)
-                img.style.scale = result.scale;
-            }
-        },
+// function calculateScaleFactor(containerHeight, rotatedHeight, itemWidth, itemHeight) {
+//     const item_aspect_ratio = itemWidth / itemHeight;
 
-        change: (e) => {
-            img.style.rotate = `${e.value}deg`
-            const containerHeight = document.querySelector(".image__holder").offsetHeight
-            const originalWidth = img.offsetWidth;
-            const originalHeight = img.offsetHeight;
-            const rotationAngleDegrees = e.value;
-            const rotatedHeight = calculateRotatedHeight(originalWidth, originalHeight, rotationAngleDegrees);
+//     // Calculate the scale factor based on the container height and rotated height while preserving aspect ratio
+//     const scaleFactor = containerHeight / rotatedHeight;
 
-            if (rotationAngleDegrees == 0) {
-                img.style.scale = 1.0;
-            }else if (rotatedHeight - containerHeight >= 10) {
-                const result = calculateScaleFactor(containerHeight, rotatedHeight, originalWidth, originalHeight)
-                img.style.scale = result.scale;
-            }
-        }
-    });
-});
+//     // Adjust the item's width and height based on the scale factor while preserving aspect ratio
+//     const scaledWidth = itemWidth * scaleFactor;
+//     const scaledHeight = itemHeight * scaleFactor;
+
+//     if (scaledHeight > containerHeight) {
+//         // If the scaled height exceeds the container height, recalculate using the container height
+//         const maxScaleFactor = containerHeight / itemHeight;
+//         scaledWidth = itemWidth * maxScaleFactor;
+//         scaledHeight = itemHeight * maxScaleFactor;
+//         return { scale: maxScaleFactor, width: scaledWidth, height: scaledHeight };
+//     }
+
+//     return { scale: scaleFactor, width: scaledWidth, height: scaledHeight };
+// }
+
+// document.addEventListener("DOMContentLoaded", () => {
+
+
+    // $("#circular-range").roundSlider({
+    //     radius: 100,
+    //     width: 8,
+    //     handleSize: "+24",
+    //     handleShape: "dot",
+    //     sliderType: "min-range",
+    //     value: 0,
+    //     startAngle: 90,
+    //     max: 360,
+
+    //     drag: (e) => {
+    //         img.style.rotate = `${e.value}deg`
+    //         const containerHeight = document.querySelector(".image__holder").offsetHeight
+    //         const originalWidth = img.offsetWidth;
+    //         const originalHeight = img.offsetHeight;
+    //         const rotationAngleDegrees = e.value;
+    //         const rotatedHeight = calculateRotatedHeight(originalWidth, originalHeight, rotationAngleDegrees);
+
+    //         if (rotationAngleDegrees == 0) {
+    //             img.style.scale = 1.0;
+    //         } else if (rotatedHeight - containerHeight >= 10) {
+    //             const result = calculateScaleFactor(containerHeight, rotatedHeight, originalWidth, originalHeight)
+    //             img.style.scale = result.scale;
+    //         }
+    //     },
+
+    //     change: (e) => {
+    //         img.style.rotate = `${e.value}deg`
+    //         const containerHeight = document.querySelector(".image__holder").offsetHeight
+    //         const originalWidth = img.offsetWidth;
+    //         const originalHeight = img.offsetHeight;
+    //         const rotationAngleDegrees = e.value;
+    //         const rotatedHeight = calculateRotatedHeight(originalWidth, originalHeight, rotationAngleDegrees);
+
+    //         if (rotationAngleDegrees == 0) {
+    //             img.style.scale = 1.0;
+    //         } else if (rotatedHeight - containerHeight >= 10) {
+    //             const result = calculateScaleFactor(containerHeight, rotatedHeight, originalWidth, originalHeight)
+    //             img.style.scale = result.scale;
+    //         }
+    //     }
+    // });
+// });

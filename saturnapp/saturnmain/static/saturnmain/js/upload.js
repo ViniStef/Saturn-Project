@@ -1,10 +1,19 @@
+import { RoundSlider } from './angle-slider.js';
+
 document.addEventListener("DOMContentLoaded", () => {
-    let formUpload = document.querySelector(".upload__form");
-    let labelUpload = document.querySelector(".upload__label");
-    let inputUpload = document.querySelector("#id_image");
-    let imgHolder = document.querySelector("#holder__img")
+    const sliderInstance = new RoundSlider();
+    // sliderInstance.manageRoundSlider();
+    const formUpload = document.querySelector(".upload__form");
+    const labelUpload = document.querySelector(".upload__label");
+    const inputUpload = document.querySelector("#id_image");
+    const imgHolder = document.querySelector("#holder__img");
 
     inputUpload.addEventListener("change", () => {
+        // Aguarda até a imagem carregar para depois reverter o css e ir para a posição inicial
+        imgHolder.addEventListener("load", () => {
+            imgHolder.style = "";
+        })
+        
         if (inputUpload.value) {
             let formData = new FormData(document.querySelector(".upload__form"));
             var xhr = new XMLHttpRequest();
@@ -22,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             };
             xhr.send(formData);
+            // sliderInstance.reset();
         }
     });
 });

@@ -24,14 +24,15 @@ class Rotate {
         }
         // image.style.transform = `rotate(${angle}deg)`;
     }
+    
 }
 
-angleBtns = document.querySelectorAll(".angle__option");
+// angleBtns = document.querySelectorAll(".angle__option");
 
-angleBtns.forEach((btn) => {
-    btn.addEventListener("click", () => {
-        console.log("Test")
-        let rotate = new Rotate(false,false)
-        rotate.rotateImg(90)
-    })
-})
+// angleBtns.forEach((btn) => {
+//     btn.addEventListener("click", () => {
+//         console.log("Test")
+//         let rotate = new Rotate(false,false)
+//         rotate.rotateImg(90)
+//     })
+// })
