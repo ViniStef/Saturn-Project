@@ -43,7 +43,7 @@
             <div class="image__container">
 
                 <div class="image__holder">
-                    <img src="{% static 'saturnmain/img/Earth Spirit.png' %}" style="scale: 1;" alt="Your Image"
+                    <img src="{% static 'saturnmain/img/Earth Spirit.png' %}" style="scale: 1;filter: '';" alt="Your Image"
                         id="holder__img">
                 </div>
 
@@ -399,11 +399,11 @@
                     <li class="processing__item">
                         <form action="POST" class="processing__form">
                             <div class="icon__container">
-                                <img src="{% static 'saturnmain/img/greyscale.svg' %}" alt="Greyscale" class="filter__svg">
-                                <label for="greyscale">Greyscale</label>
+                                <img src="{% static 'saturnmain/img/grayscale.svg' %}" alt="Grayscale" class="filter__svg">
+                                <label for="grayscale">Grayscale</label>
                             </div>
                             <div class="input__container">
-                                <input type="range" class="range__input" id="greyscale" name="range__input" min="0" max="100">
+                                <input type="range" class="range__input" id="grayscale" name="range__input" min="0" max="100">
                                 <input type="text" id="current__number" placeholder="50">
                             </div>
                         </form>
@@ -412,7 +412,7 @@
                         <form action="POST" class="processing__form">
                             <div class="icon__container">
                                 <img src="{% static 'saturnmain/img/contrast.svg' %}" alt="Contrast" class="filter__svg">
-                                <label for="contrast">Constrast</label>
+                                <label for="contrast">Contrast</label>
                             </div>
                             <div class="input__container">
                                 <input type="range" class="range__input" id="contrast" name="range__input" min="0" max="100">
@@ -449,6 +449,7 @@
     <script type="text/javascript" src="{% static 'saturnmain/js/image-rotate.js' %}"></script>
     <script type="module" src="{% static 'saturnmain/js/upload.js' %}"></script>
     <script type="module" src="{% static 'saturnmain/js/rotate.js' %}"></script>
+    <script type="module" src="{% static 'saturnmain/js/filter.js' %}"></script>
 </body>
 
 </html>
