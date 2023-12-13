@@ -4,7 +4,7 @@ const img = document.querySelector("#holder__img");
 rangeInputs.forEach((input) => {
     input.addEventListener("input", () => {
         let currentFilter = img.style.filter;
-        console.log(currentFilter)
+        // console.log(currentFilter)
         if (input.id === "saturation") {
             const filterValue = parseInt(input.value);
             console.log((filterValue / 100) * 2)

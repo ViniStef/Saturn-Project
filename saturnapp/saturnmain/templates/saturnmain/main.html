@@ -326,11 +326,11 @@
                     </div>
 
                     <div class="file__download">
-                        <form action="" method="POST" enctype="multipart/form-data" class="download__form">
+                        <form action="download/" method="POST" enctype="multipart/form-data" class="download__form">
+                            {% csrf_token %}
                             <div class="download__container file__access">
                                 <a href="{% static 'saturnmain/img/download_icon.svg' %}" class="download__link"
                                     download="download_icon.svg">
-
                                     Click to Download
                                     <img src="{% static 'saturnmain/img/download_icon.svg' %}"
                                         class="download__icon file__icon" alt="Download Icon">
@@ -450,6 +450,7 @@
     <script type="module" src="{% static 'saturnmain/js/upload.js' %}"></script>
     <script type="module" src="{% static 'saturnmain/js/rotate.js' %}"></script>
     <script type="module" src="{% static 'saturnmain/js/filter.js' %}"></script>
+    <script type="module" src="{% static 'saturnmain/js/download.js' %}"></script>
 </body>
 
 </html>

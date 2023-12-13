@@ -1,9 +1,12 @@
+import json
 import os
+import sys
 from django.conf import settings
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from PIL import Image
 from .forms import ImageForm
+from .Image_Edit import ImageEdit
 
 # Create your views here.
 
@@ -46,3 +49,30 @@ def image(request):
     else:
         form = ImageForm()
     return render(request, 'saturnmain/main.html', {"form": form})
+
+def get_image_path(folder_path):
+    try:
+        image_file = next(f for f in os.listdir(folder_path) if f.lower().endswith(('.png', '.jpg', '.jpeg', '.gif', '.bmp')))
+        return os.path.join(folder_path, image_file)
+    except (StopIteration, FileNotFoundError):
+        raise ValueError("No image files found in the directory.")
+    except ValueError:
+        raise ValueError("More than one image file found in the directory.")
+
+
+def download(request):
+    folder_path = 'C:/Users/Vinicius/Desktop/Codigo/Saturn/saturnapp/media/image'
+    # print(get_image_path(folder_path))  
+    if request.method == 'POST':
+        # Assuming the request body contains JSON data
+        data = json.loads(request.body.decode('utf-8'))
+        print(data)
+        # Process the data as needed
+        img = ImageEdit(get_image_path(folder_path))
+        # img.hueShift(30)
+
+        # Return a JSON response
+        return JsonResponse({'message': 'Success'})
+    else:
+        return JsonResponse({'message': 'Invalid request method'})
+    
