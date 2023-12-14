@@ -6,8 +6,26 @@
     <title>Saturn</title>
     <link rel="stylesheet" type="text/css" href="saturnmain\css\reset.css">
     <link rel="stylesheet" type="text/css" href="styles.css">
+    <style>
+        input {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <h1>Hi</h1>
+    <input type="text">
+    <button>Search</button>
+
+
+    <script>
+        document.querySelector("button").addEventListener("mouseover", () => {
+            document.querySelector("input").style.display = "inline";
+        }) 
+        document.querySelector("button").addEventListener("mouseleave", () => {
+            document.querySelector("input").style.display = "none";
+        }) 
+        
+    </script>
 </body>
 </html>

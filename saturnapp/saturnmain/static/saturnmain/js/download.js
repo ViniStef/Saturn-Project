@@ -11,10 +11,27 @@ const download = () => {
         const scale = computedStyle.getPropertyValue("scale");
         const rotate = computedStyle.getPropertyValue("rotate");
 
+        let filtersArray = filters.split(" ");
+
         console.log(filters);
+        console.log(filtersArray);
     
+        const formattedFilters = filtersArray.map(item => {
+            const matches = item.match(/([a-zA-Z-]+)\(([^)]+)\)/);
+            
+            if (matches) {
+                const key = matches[1];
+                const value = matches[2];
+                return { [key]: value };
+            } else {
+                return null; // or handle invalid format accordingly
+            }
+        });
+
+        console.log(formattedFilters)
+
         const postData = {
-            filters: filters,
+            filters: formattedFilters,
             scale: scale,
             rotate: rotate,
         };

@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import sys
 from django.conf import settings
 from django.shortcuts import render
@@ -64,11 +65,47 @@ def download(request):
     folder_path = 'C:/Users/Vinicius/Desktop/Codigo/Saturn/saturnapp/media/image'
     # print(get_image_path(folder_path))  
     if request.method == 'POST':
+        img = ImageEdit(get_image_path(folder_path))
         # Assuming the request body contains JSON data
         data = json.loads(request.body.decode('utf-8'))
-        print(data)
+        filters = data['filters']
+        for filter_item in filters:
+            try:
+                if "saturate" in filter_item:
+                    print("Applying Saturation")
+                    img.saturation(float(filter_item["saturate"]))
+                elif "brightness" in filter_item:
+                    print("Applying Brightness")
+                    img.brightness(float(filter_item["brightness"]))
+                elif "blur" in filter_item:
+                    print("Applying Blur")
+                    img.blur(float(filter_item["blur"].split("px")[0]))
+                elif "opacity" in filter_item:
+                    print("Applying Opacity")
+                    img.opacity(float(filter_item["opacity"]))
+                # elif "grayscale" in filter_item:
+                #     print("Applying Grayscale")
+                #     print(filter_item)
+                #     img.grayscale(float(filter_item["grayscale"]))
+                elif "contrast" in filter_item:
+                    print("Applying Contrast")
+                    img.contrast(float(filter_item["contrast"]))
+                elif "hue-rotate" in filter_item:
+                    print("Applying Hue Shift")
+                    img.hue_shift(float(filter_item["hue-rotate"].split("deg")[0]))
+                else:
+                    print("Error: Unrecognized filter.")
+            except Exception as e:
+                print(f"Error applying filter: {e}")
+
+        resulting_image = img.get_resulting_image()
+        resulting_image.save(get_image_path(folder_path))
+        print(filters)
+        rotate = data['rotate']
+        scale = data['scale']
+        # print(filters)
         # Process the data as needed
-        img = ImageEdit(get_image_path(folder_path))
+        
         # img.hueShift(30)
 
         # Return a JSON response
